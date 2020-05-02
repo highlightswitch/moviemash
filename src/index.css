@@ -9,7 +9,6 @@ ol, ul {
 
 .card {
     display: grid;
-    border: 1px solid black;
     width: 50%;
     margin: 0 auto;
 }
@@ -21,12 +20,12 @@ ol, ul {
     font-size: 24px;
     font-weight: bold;
     line-height: 34px;
-    height: 200px;
+    height: 300px;
     margin-right: 10px;
     margin-top: 1px;
     padding: 0;
     text-align: center;
-    width: 100px;
+    width: 200px;
 }
 
 .movie-details {

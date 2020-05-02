@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+import poster01 from './TestMoviePosters/01.png'
+import poster02 from './TestMoviePosters/02.png'
+
 function Card(props) {
     return (
         <div className="card">
-            <button className="poster" onClick={props.onClick}>
-                {props.movieDetails.poster}
-            </button>
-            Text Here
+            <img src={props.movieDetails.img} className="poster" onClick={props.onClick} alt={props.movieDetails.title} />
+            {props.movieDetails.title} ({props.movieDetails.year})
         </div>
     );
 }
@@ -42,13 +43,13 @@ class Game extends React.Component {
                 id: "001",
                 title: "Movie 001",
                 year: "1970",
-                poster: "img001.png",
+                poster: poster01,
             },
             right: {
                 id: "002",
                 title: "Movie 002",
                 year: "1971",
-                poster: "img002.png",
+                poster: poster02,
             },
         };
     }
@@ -58,13 +59,13 @@ class Game extends React.Component {
             return new MovieDetails(
                 this.state.left.title,
                 this.state.left.year,
-                this.state.left.img
+                this.state.left.poster
             );
         } else {
             return new MovieDetails(
                 this.state.right.title,
                 this.state.right.year,
-                this.state.right.img
+                this.state.right.poster
             );
         }
     }
@@ -72,9 +73,9 @@ class Game extends React.Component {
     handlePosterClicked(i) {
         let alertString;
         if(i===0)
-            alertString = "Left poster clicked with details " + this.getMovieDetails(true);
+            alertString = "Left poster clicked with title " + this.getMovieDetails(true).title;
         else if(i===1)
-            alertString = "Right poster clicked with details " + this.getMovieDetails(false);
+            alertString = "Right poster clicked with title " + this.getMovieDetails(false).title;
         else
             alertString = "Error";
 
