@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+
 import './index.css';
 
 import poster01 from './TestMoviePosters/01.png'
 import poster02 from './TestMoviePosters/02.png'
+
+const SUBMIT_PATH = "localhost:2999/submitWinner.php";
 
 function Card(props) {
     return (
@@ -38,7 +42,19 @@ class Board extends React.Component {
 class Game extends React.Component {
     constructor(props) {
         super(props);
+        const movies = this.getMovies();
         this.state = {
+            left: movies.left,
+            right: movies.right,
+        };
+    }
+
+    getMovies(){
+        return this.getDefaultMovies();
+    }
+
+    getDefaultMovies(){
+        return {
             left: {
                 id: "001",
                 title: "Movie 001",
@@ -50,7 +66,7 @@ class Game extends React.Component {
                 title: "Movie 002",
                 year: "1971",
                 poster: poster02,
-            },
+            }
         };
     }
 
@@ -71,15 +87,34 @@ class Game extends React.Component {
     }
 
     handlePosterClicked(i) {
-        let alertString;
         if(i===0)
-            alertString = "Left poster clicked with title " + this.getMovieDetails(true).title;
+            this.setState(
+                {
+                    winningId: this.state.left.id,
+                    losingId: this.state.right.id,
+                },
+                this.submitWinner
+            );
         else if(i===1)
-            alertString = "Right poster clicked with title " + this.getMovieDetails(false).title;
+            this.setState(
+                {
+                    winningId: this.state.right.id,
+                    losingId: this.state.left.id,
+                },
+                this.submitWinner
+            );
         else
-            alertString = "Error";
+            console.log("ERROR: handlePosterClicked");
+    }
 
-        alert(alertString);
+    submitWinner(){
+        axios
+            .post(SUBMIT_PATH, this.state)
+            .then(result => {
+                console.log("Submitted with result: " + result);
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
