@@ -7,7 +7,7 @@ import './index.css';
 import poster01 from './TestMoviePosters/01.png'
 import poster02 from './TestMoviePosters/02.png'
 
-const SUBMIT_PATH = process.env.REACT_APP_TEST + "api/submitWinner.php";
+const SUBMIT_PATH = "api/submitWinner.php";
 
 function Card(props) {
     return (
