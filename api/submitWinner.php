@@ -1,8 +1,8 @@
 <?php
 //TODO: Dont know if we need these headers. Maybe issues with CORS
-header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Origin: *');
 //header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE');
-header('Access-Control-Allow-Headers: *');
+//header('Access-Control-Allow-Headers: *');
 
 $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
