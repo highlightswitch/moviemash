@@ -8,7 +8,7 @@ function connectToDatabase(){
 
     try {
         // Create connection
-        $conn = mysqli_connect("localhost", "admin", "admin");
+        $conn = mysqli_connect("localhost", "admin", "admin", "moviemash");
         if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }
