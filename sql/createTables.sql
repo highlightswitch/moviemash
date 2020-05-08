@@ -8,3 +8,14 @@ CREATE TABLE movie(
     score INT NOT NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE match_record(
+    id INT NOT NULL AUTO_INCREMENT,
+    winning_id INT NOT NULL,
+    losing_id INT NOT NULL,
+    winning_score_before INT NOT NULL,
+    losing_score_before INT NOT NULL,
+    winning_score_after INT NOT NULL,
+    losing_score_after INT NOT NULL,
+    PRIMARY KEY (id)
+);
