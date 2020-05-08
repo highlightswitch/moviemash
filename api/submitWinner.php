@@ -8,19 +8,11 @@ $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
 
 require_once 'databaseConn.php';
-$conn = connectToDatabase();
+if($conn = connectToDatabase()) {
+    submitWinner($conn);
+}
 
-test($conn, null);
-
-function temp($conn){
-
-    if (empty($_POST['winningId']) || empty($_POST['losingId'])){
-
-        die('PHP: Attempting to submit winner. winningId or losingId is not set.');
-
-    } else {
-        // set response code - 200 OK
-        http_response_code(200);
+function submitWinner($conn){
 
         $winner = new Player(
             $_POST['winningId'],
@@ -35,19 +27,18 @@ function temp($conn){
         updateNewScore($conn, $winner);
         updateNewScore($conn, $loser);
 
-        echo("success");
-    }
 }
 
 function getScoreOfMovieWithId($conn, $id){
     $sql = "SELECT score FROM movie WHERE id = '$id';";
     $result = $conn->query($sql);
 
-    if ($result->num_rows = 1) {
+    if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
         return $row['score'];
     } else {
         //TODO: Handle error
+        error_log("Error when getting old score");
         return -1;
     }
 }
@@ -66,25 +57,14 @@ function updateNewScore($conn, $player){
         //TODO: Handle success
     } else {
         //TODO: Handle error
-    }
-}
-
-function test($conn, $player){
-    $sql = "UPDATE movie SET score = 5 WHERE id = 1;";
-
-    if ($conn->query($sql) === TRUE) {
-        //TODO: Handle success
-    } else {
-        //TODO: Handle error
-        error_log($conn->error);
+        error_log("Error when updating row");
     }
 }
 
 class Player{
 
-    public $id;
-    public $oldScore;
-    public $newScore;
+    public int $id;
+    public int $oldScore;
 
     function __construct($id, $oldScore) {
         $this->id = $id;
