@@ -45,8 +45,9 @@ function getScoreOfMovieWithId($conn, $id){
 
 function assignNewScores($winner, $loser){
 
-    $winner->newScore = $winner->oldScore + 100;
-    $loser->newScore = $loser->oldScore - 100;
+    $K = 32;
+    $winner->newScore = $winner->oldScore + $K*(1.0 - $winner->chanceOfWinningAgainst($loser));
+    $loser->newScore = $loser->oldScore + $K*(0.0 - $loser->chanceOfWinningAgainst($winner));
 
 }
 
@@ -69,6 +70,10 @@ class Player{
     function __construct($id, $oldScore) {
         $this->id = $id;
         $this->oldScore = $oldScore;
+    }
+
+    function chanceOfWinningAgainst($opponent){
+        return 1/(1+pow(10, ($opponent->oldScore - $this->oldScore)/400));
     }
 
 }
