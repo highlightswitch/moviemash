@@ -23,5 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # InteliJ IDEA files
-.idea
+.idea/
 *.iml
