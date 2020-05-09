@@ -9,6 +9,8 @@ CREATE TABLE movie(
     PRIMARY KEY (id)
 );
 
+CREATE INDEX inx_score ON movie(score);
+
 CREATE TABLE match_record(
     id INT NOT NULL AUTO_INCREMENT,
     winning_id INT NOT NULL,
