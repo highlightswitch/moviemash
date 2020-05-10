@@ -61,8 +61,7 @@ function getOpponent($conn, $challenger, $omitIds){
     if ($result->num_rows == 0) {
         return getRandomMovie($conn, array($challenger['id']));
     } else if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        return $row['score'];
+        return $result->fetch_assoc();
     } else {
         //TODO: Handle error
         error_log("Error when getting old score");
