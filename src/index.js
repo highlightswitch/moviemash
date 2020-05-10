@@ -4,10 +4,8 @@ import axios from 'axios';
 
 import './index.css';
 
-import poster01 from './TestMoviePosters/01.png'
-import poster02 from './TestMoviePosters/02.png'
-
 const SUBMIT_PATH = "api/submitWinner.php";
+const GET_PATH = "api/getNewMatch.php";
 
 function Card(props) {
     return (
@@ -42,52 +40,71 @@ class Board extends React.Component {
 class Game extends React.Component {
     constructor(props) {
         super(props);
-        const movies = this.getMovies();
-        this.state = {
-            left: movies.left,
-            right: movies.right,
-        };
+        this.state = {ready: false};
+        this.getMovies();
     }
 
     getMovies(){
-        return this.getDefaultMovies();
+        axios
+            .post(GET_PATH, this.state)
+            .then(result => {
+
+                //TODO: handle errors with result
+
+                let left = result.data.left;
+                let right = result.data.right;
+
+                this.setState({
+                    left: left,
+                    right: right,
+                    ready: true,
+                });
+
+            }).catch(error => {
+                console.log(error);
+            });
     }
 
-    getDefaultMovies(){
-        return {
-            left: {
-                id: "001",
-                title: "Movie 001",
-                year: "1970",
-                poster: poster01,
-            },
-            right: {
-                id: "002",
-                title: "Movie 002",
-                year: "1971",
-                poster: poster02,
-            }
-        };
-    }
+    // getDefaultMovies(){
+    //     return {
+    //         left: {
+    //             id: "001",
+    //             title: "Movie 001",
+    //             year: "1970",
+    //             poster: poster01,
+    //         },
+    //         right: {
+    //             id: "002",
+    //             title: "Movie 002",
+    //             year: "1971",
+    //             poster: poster02,
+    //         }
+    //     };
+    // }
 
     getMovieDetails(isLeft){
-        if(isLeft){
-            return new MovieDetails(
-                this.state.left.title,
-                this.state.left.year,
-                this.state.left.poster
-            );
+        if(this.state.ready) {
+            if (isLeft) {
+                return new MovieDetails(
+                    this.state.left.title,
+                    this.state.left.year,
+                    this.state.left.poster
+                );
+            } else {
+                return new MovieDetails(
+                    this.state.right.title,
+                    this.state.right.year,
+                    this.state.right.poster
+                );
+            }
         } else {
-            return new MovieDetails(
-                this.state.right.title,
-                this.state.right.year,
-                this.state.right.poster
-            );
+            //TODO: Get a better loading thing
+            return new MovieDetails( "Loading...", "", null);
         }
     }
 
     handlePosterClicked(i) {
-        if(i===0)
+        if(i===0) {
             this.setState(
                 {
                     winningId: this.state.left.id,
@@ -95,7 +112,7 @@ class Game extends React.Component {
                 },
                 this.submitWinner
             );
-        else if(i===1)
+        } else if(i===1) {
             this.setState(
                 {
                     winningId: this.state.right.id,
@@ -103,15 +120,22 @@ class Game extends React.Component {
                 },
                 this.submitWinner
             );
-        else
+        } else {
             console.log("ERROR: handlePosterClicked");
+        }
+
+        this.getMovies();
     }
 
     submitWinner(){
         axios
             .post(SUBMIT_PATH, this.state)
             .then(result => {
-                console.log("Submitted with result: " + result);
+                //TODO: handle error
+                this.setState({
+                        winningId: -1,
+                        losingId: -1,
+                    });
             }).catch(error => {
                 console.log(error);
             });
