@@ -1,8 +1,4 @@
 <?php
-echo "<html><head></head><body>attempt:";
-if($conn = connectToDatabase()){
-    echo "<br />Success</body></html>";
-}
 
 function connectToDatabase(){
 
