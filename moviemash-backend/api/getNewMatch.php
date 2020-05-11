@@ -13,8 +13,9 @@ $_POST = json_decode($rest_json, true);
 require_once 'databaseConn.php';
 if($conn = connectToDatabase()) {
     $left = getRandomMovie($conn, array());
-    $right = getOpponent($conn, $left, array($left['id']));
+    $right = getOpponent($conn, $left, array($left['tmdb_id']));
     echo json_encode(array("left"=>$left, "right"=>$right));
+//    error_log(print_r($left));
 }
 
 function getRandomMovie($conn, $omitIds){
@@ -25,7 +26,7 @@ function getRandomMovie($conn, $omitIds){
         $sql = "SELECT * FROM " . TABLE . " ORDER BY RAND() LIMIT 1;";
     } else {
         $sqlOmitIds = '(' . join(',', $omitIds) . ')';
-        $sql = "SELECT * FROM " . TABLE . " WHERE id NOT IN $sqlOmitIds ORDER BY RAND() LIMIT 1;";
+        $sql = "SELECT * FROM " . TABLE . " WHERE tmdb_id NOT IN $sqlOmitIds ORDER BY RAND() LIMIT 1;";
     }
     $result = $conn->query($sql);
 
@@ -47,21 +48,21 @@ function getOpponent($conn, $challenger, $omitIds){
     $sqlOmitIds = '(' . join(',', $omitIds) . ')';
 
     $maxScoreDifference = 300;
-    $minScore = $challenger['score'] - $maxScoreDifference;
-    $maxScore = $challenger['score'] + $maxScoreDifference;
+    $minScore = $challenger['elo_score'] - $maxScoreDifference;
+    $maxScore = $challenger['elo_score'] + $maxScoreDifference;
 
     $sql = "SELECT * 
             FROM " . TABLE . " 
-            WHERE score >= $minScore 
-              AND score <= $maxScore 
-              AND id NOT IN $sqlOmitIds 
+            WHERE elo_score >= $minScore 
+              AND elo_score <= $maxScore 
+              AND tmdb_id NOT IN $sqlOmitIds 
             ORDER BY rand() 
             LIMIT 1;";
 
     $result = $conn->query($sql);
 
     if ($result->num_rows == 0) {
-        return getRandomMovie($conn, array($challenger['id']));
+        return getRandomMovie($conn, array($challenger['tmdb_id']));
     } else if ($result->num_rows == 1) {
         return $result->fetch_assoc();
     } else {

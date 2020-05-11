@@ -4,6 +4,8 @@
 //header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE');
 //header('Access-Control-Allow-Headers: *');
 
+define("TABLE", "tmdb_movie");
+
 $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
 
@@ -30,12 +32,12 @@ function submitWinner($conn){
 }
 
 function getScoreOfMovieWithId($conn, $id){
-    $sql = "SELECT score FROM movie WHERE id = '$id';";
+    $sql = "SELECT elo_score FROM ". TABLE ." WHERE tmdb_id = '$id';";
     $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
-        return $row['score'];
+        return $row['elo_score'];
     } else {
         //TODO: Handle error
         error_log("Error when getting old score");
@@ -52,7 +54,7 @@ function assignNewScores($winner, $loser){
 }
 
 function updateNewScore($conn, $player){
-    $sql = "UPDATE movie SET score = '$player->newScore' WHERE id = '$player->id';";
+    $sql = "UPDATE " . TABLE . " SET elo_score = '$player->newScore' WHERE tmdb_id = '$player->id';";
 
     if ($conn->query($sql) === TRUE) {
         //TODO: Handle success

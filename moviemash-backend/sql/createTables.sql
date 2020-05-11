@@ -26,12 +26,15 @@ CREATE TABLE match_record(
 );
 
 CREATE TABLE tmdb_movie(
-    id INT NOT NULL AUTO_INCREMENT,
-    tmdb_id INT NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    year VARCHAR(100) NOT NULL,
-    director VARCHAR(100) NOT NULL,
-    poster VARCHAR(500),
-    score INT NOT NULL,
-    PRIMARY KEY (id)
-)
+    tmdb_id INT NOT NULL AUTO_INCREMENT,
+    elo_score INT NOT NULL,
+    title VARCHAR(100),
+    poster_path VARCHAR(300),
+    release_date DATE,
+    popularity FLOAT,
+    vote_count INT,
+    vote_average FLOAT,
+    PRIMARY KEY (tmdb_id)
+);
+
+CREATE INDEX inx_elo_score ON tmdb_movie(elo_score);

@@ -82,24 +82,23 @@ class Game extends React.Component {
     //     };
     // }
 
+    //TODO: Decode special chars in titles (eg apostrophe)
     getMovieDetails(isLeft){
         if(this.state.ready) {
             if (isLeft) {
                 return new MovieDetails(
                     this.state.left.title,
-                    this.state.left.year,
-                    this.state.left.poster
+                    this.state.left.poster_path
                 );
             } else {
                 return new MovieDetails(
                     this.state.right.title,
-                    this.state.right.year,
-                    this.state.right.poster
+                    this.state.right.poster_path
                 );
             }
         } else {
             //TODO: Get a better loading thing
-            return new MovieDetails( "Loading...", "", null);
+            return new MovieDetails( "Loading...",  null);
         }
     }
 
@@ -107,16 +106,16 @@ class Game extends React.Component {
         if(i===0) {
             this.setState(
                 {
-                    winningId: this.state.left.id,
-                    losingId: this.state.right.id,
+                    winningId: this.state.left.tmdb_id,
+                    losingId: this.state.right.tmdb_id,
                 },
                 this.submitWinner
             );
         } else if(i===1) {
             this.setState(
                 {
-                    winningId: this.state.right.id,
-                    losingId: this.state.left.id,
+                    winningId: this.state.right.tmdb_id,
+                    losingId: this.state.left.tmdb_id,
                 },
                 this.submitWinner
             );
@@ -155,9 +154,8 @@ class Game extends React.Component {
 }
 
 class MovieDetails {
-    constructor(t, y, i) {
+    constructor(t, i) {
         this.title = t;
-        this.year = y;
         this.img = i;
     }
 }
