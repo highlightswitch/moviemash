@@ -8,7 +8,7 @@ if($conn = connectToDatabase()) {
     for($i = 0; $i <= 10; $i++){
         $tmdbId = $_POST['results'][$i]['id'];
         $title = $_POST['results'][$i]['title'];
-        $poster = $_POST['results'][$i]['poster_path'];
+        $poster = "https://image.tmdb.org/t/p/w500" . $_POST['results'][$i]['poster_path'];
         insertMovie($conn, $tmdbId, $title, $poster);
     }
 }
