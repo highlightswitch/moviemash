@@ -23,3 +23,12 @@ CREATE TABLE match_record(
     losing_score_after INT NOT NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE tmdb_movie(
+    id INT NOT NULL AUTO_INCREMENT,
+    tmdb_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    poster VARCHAR(500),
+    score INT NOT NULL,
+    PRIMARY KEY (id)
+)
