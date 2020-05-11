@@ -14,7 +14,8 @@ if($conn = connectToDatabase()) {
 }
 
 function insertMovie($conn, $tmdbId, $title, $poster){
-    $sql = "INSERT INTO tmdb_movie(tmdb_id, title, poster, score) VALUES ('$tmdbId', '$title', '$poster', 1000);";
+    $sql = "INSERT INTO tmdb_movie(tmdb_id, title, year, director, poster, score) 
+            VALUES ('$tmdbId', '$title', 'tempYear', 'tempDirector', '$poster', 1000);";
 
     if ($conn->query($sql) === TRUE) {
         //TODO: Handle success
