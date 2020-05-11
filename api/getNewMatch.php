@@ -5,6 +5,8 @@
 //header('Access-Control-Allow-Headers: *');
 header('Content-Type: application/json');
 
+define("TABLE", "tmdb_movie");
+
 $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
 
@@ -20,10 +22,10 @@ function getRandomMovie($conn, $omitIds){
     // SQL Statement not efficient.
     // Maybe better SQL found here: https://stackoverflow.com/questions/4329396/mysql-select-10-random-rows-from-600k-rows-fast
     if(empty($omitIds)){
-        $sql = "SELECT * FROM movie ORDER BY RAND() LIMIT 1;";
+        $sql = "SELECT * FROM " . TABLE . " ORDER BY RAND() LIMIT 1;";
     } else {
         $sqlOmitIds = '(' . join(',', $omitIds) . ')';
-        $sql = "SELECT * FROM movie WHERE id NOT IN $sqlOmitIds ORDER BY RAND() LIMIT 1;";
+        $sql = "SELECT * FROM " . TABLE . " WHERE id NOT IN $sqlOmitIds ORDER BY RAND() LIMIT 1;";
     }
     $result = $conn->query($sql);
 
@@ -49,7 +51,7 @@ function getOpponent($conn, $challenger, $omitIds){
     $maxScore = $challenger['score'] + $maxScoreDifference;
 
     $sql = "SELECT * 
-            FROM movie 
+            FROM " . TABLE . " 
             WHERE score >= $minScore 
               AND score <= $maxScore 
               AND id NOT IN $sqlOmitIds 
