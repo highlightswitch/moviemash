@@ -28,3 +28,6 @@ yarn-error.log*
 
 # Composer files
 moviemash-backend/vendor
+
+# PHPUnit output files
+.phpunit.result.cache
