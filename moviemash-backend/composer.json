@@ -1,0 +1,18 @@
+{
+  "name": "vendor_name/moviemash-backend" ,
+  "description": "description" ,
+  "minimum-stability": "stable" ,
+  "license": "proprietary" ,
+  "authors": [
+    {
+      "name": "Ewan" ,
+      "email": "ewanb72@gmail.com"
+    }
+  ] ,
+  "require": {
+    
+  },
+  "require-dev": {
+    "phpunit/phpunit": "9"
+  }
+}

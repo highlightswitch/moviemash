@@ -25,3 +25,6 @@ yarn-error.log*
 # InteliJ IDEA files
 .idea/
 *.iml
+
+# Composer files
+moviemash-backend/vendor
