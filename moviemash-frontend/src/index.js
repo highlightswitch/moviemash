@@ -136,8 +136,6 @@ class Game extends React.Component {
         } else {
             console.log("ERROR: handlePosterClicked");
         }
-
-        this.getMovies();
     }
 
     handleNotSeenClicked(i) {
@@ -157,7 +155,7 @@ class Game extends React.Component {
                 },
                 this.submitWinner
             );
-        } else if(i===1) {
+        } else if(i===2) {
             this.setState(
                 {
                     notSeenLeft: false,
@@ -166,16 +164,15 @@ class Game extends React.Component {
                 this.submitWinner
             );
         } else {
-            console.log("ERROR: handlePosterClicked");
+            console.log("ERROR: handleNotSeenClicked");
         }
-
-        this.getMovies();
     }
 
     submitWinner(){
         axios
             .post(SUBMIT_PATH, this.state)
             .then(result => {
+                this.getMovies();
                 //TODO: handle error
                 this.setState({
                         winningId: -1,
