@@ -54,8 +54,23 @@ class Game extends React.Component {
             ready: false,
             notSeenLeft: false,
             notSeenRight: false,
+            mode: "Random",
         };
         this.getMovies();
+    }
+
+    handleChangeModeClicked(){
+        if(this.state.mode === "Random"){
+            this.setState({
+                mode: "King of the Hill"
+            });
+        } else if(this.state.mode === "King of the Hill"){
+            this.setState({
+                mode: "Random"
+            });
+        } else {
+            console.log("ERROR: onChangeModeClicked");
+        }
     }
 
     getMovies(){
@@ -197,6 +212,9 @@ class Game extends React.Component {
                     movieDetails={[this.getMovieDetails(true), this.getMovieDetails(false)]}
                     onNotSeenClicked={(i) => this.handleNotSeenClicked(i)}
                 />
+                <br/>
+                Mode: {this.state.mode} <br />
+                <button onClick={() => this.handleChangeModeClicked()}>Change Mode</button>
             </div>
         );
     }

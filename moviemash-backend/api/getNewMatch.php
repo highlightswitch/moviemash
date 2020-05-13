@@ -20,38 +20,65 @@ require_once 'databaseConn.php';
 if($conn = connectToDatabase()) {
 
     //TODO: Most of the omitIds code has not been tested properly
+
+    if($_POST['notSeenLeft'] && $_POST['notSeenRight']){
+        //Not seen either movie, so get two random movies
+        $movies = getTwoRandomMovies($conn);
+    } else if($_POST['notSeenLeft']){
+        //Not seen the left movie, so keep the right and get an opponent for it
+        $movies = keepOneMovieAndGetOpponent($conn, false);
+    } else if ($_POST['notSeenRight']){
+        //Not seen the right movie, so keep the left and get an opponent for it
+        $movies = keepOneMovieAndGetOpponent($conn, true);
+    } else {
+        //User has clicked a poster instead of a "Not Seen" button
+        if ($_POST['mode'] === "King of the Hill") {
+            //Mode is King of the Hill
+            //So keep the winning movie, and get an opponent for it.
+            if ($_POST['winningId'] === $_POST['left']['tmdb_id']) {
+                $movies = keepOneMovieAndGetOpponent($conn, true);
+            } else if ($_POST['winningId'] === $_POST['right']['tmdb_id']) {
+                $movies = keepOneMovieAndGetOpponent($conn, false);
+            } else {
+                //TODO: Handle error. This should never happen
+            }
+        } else if ($_POST['mode'] === "Random") {
+            //And mode is Random, so get two random movies
+            $movies = getTwoRandomMovies($conn);
+        } else {
+            //TODO: Handle error. This should never happen
+        }
+    }
+
+    echo json_encode($movies);
+
+}
+
+function getTwoRandomMovies($conn){
+
     $omitIds = $_SESSION['omitIds'];
 
-    if($_POST['notSeenLeft'] xor $_POST['notSeenRight']){
-        if($_POST['notSeenLeft']){
-            $right = $_POST['right'];
-            foreach (getListOfAlreadyPlayedOpponents($right['tmdb_id']) as $opponentId)
-                array_push($omitIds, $opponentId);
-            $left = getOpponent(
-                $conn,
-                $right,
-                $omitIds
-            );
-        } else if ($_POST['notSeenRight']){
-            $left = $_POST['left'];
-            foreach (getListOfAlreadyPlayedOpponents($left['tmdb_id']) as $opponentId)
-                array_push($omitIds, $opponentId);
-            $right = getOpponent(
-                $conn,
-                $left,
-                $omitIds
-            );
-        }
+    $left = getRandomMovie(
+        $conn,
+        $omitIds
+    );
+    foreach (getListOfAlreadyPlayedOpponents($left['tmdb_id']) as $opponentId)
+        array_push($omitIds, $opponentId);
+    $right = getOpponent(
+        $conn,
+        $left,
+        $omitIds
+    );
 
-    } else {
-        //Either:
-        //  User has clicked a poster
-        //  User has clicked "not seen both" button
-        //So just give them two new posters
-        $left = getRandomMovie(
-            $conn,
-            $omitIds
-        );
+    return array("left" => $left, "right" => $right);
+}
+
+function keepOneMovieAndGetOpponent($conn, $isLeftMovie){
+
+    $omitIds = $_SESSION['omitIds'];
+
+    if($isLeftMovie){
+        $left = $_POST['left'];
         foreach (getListOfAlreadyPlayedOpponents($left['tmdb_id']) as $opponentId)
             array_push($omitIds, $opponentId);
         $right = getOpponent(
@@ -59,9 +86,18 @@ if($conn = connectToDatabase()) {
             $left,
             $omitIds
         );
+    } else{
+        $right = $_POST['right'];
+        foreach (getListOfAlreadyPlayedOpponents($right['tmdb_id']) as $opponentId)
+            array_push($omitIds, $opponentId);
+        $left = getOpponent(
+            $conn,
+            $right,
+            $omitIds
+        );
     }
 
-    echo json_encode(array("left" => $left, "right" => $right));
+    return array("left" => $left, "right" => $right);
 
 }
 
