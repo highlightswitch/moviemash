@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!$_SESSION['playedMatchUps'])
+    $_SESSION['playedMatchUps'] = array();
+
 //TODO: Dont know if we need these headers. Maybe issues with CORS
 //header('Access-Control-Allow-Origin: *');
 //header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE');
@@ -28,6 +32,9 @@ function submitWinner($conn){
         assignNewScores($winner, $loser);
         updateNewScore($conn, $winner);
         updateNewScore($conn, $loser);
+
+        //Add match up to played matches so that user doesn't see this pairing again.
+        array_push($_SESSION['playedMatchUps'], array($_POST['winningId'], $_POST['losingId']));
 
 }
 

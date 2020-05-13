@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //TODO: Dont know if we need these headers. Maybe issues with CORS
 //header('Access-Control-Allow-Origin: *');
 //header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE');
@@ -12,10 +14,31 @@ $_POST = json_decode($rest_json, true);
 
 require_once 'databaseConn.php';
 if($conn = connectToDatabase()) {
-    $left = getRandomMovie($conn, array());
-    $right = getOpponent($conn, $left, array($left['tmdb_id']));
+
+    $left = getRandomMovie(
+        $conn,
+        array()
+    );
+
+    $right = getOpponent(
+        $conn,
+        $left,
+        getOmitIds($left['tmdb_id'])
+    );
+
     echo json_encode(array("left"=>$left, "right"=>$right));
-//    error_log(print_r($left));
+}
+
+function getOmitIds($leftId){
+    $omitIds = array();
+    array_push($omitIds, $leftId);
+    foreach ($_SESSION['playedMatchUps'] as $match){
+        if($match[0] == $leftId)
+            array_push($omitIds, $match[1]);
+        else if($match[1] == $leftId)
+            array_push($omitIds, $match[0]);
+    }
+    return $omitIds;
 }
 
 function getRandomMovie($conn, $omitIds){
