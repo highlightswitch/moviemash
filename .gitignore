@@ -31,3 +31,6 @@ moviemash-backend/vendor
 
 # PHPUnit output files
 .phpunit.result.cache
+
+# Database credentials file
+moviemash-backend/db_conn/db.config

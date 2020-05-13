@@ -15,7 +15,7 @@ define("TABLE", "tmdb_movie");
 $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
 
-require_once 'databaseConn.php';
+require_once '../db_conn/databaseConn.php';
 if($conn = connectToDatabase()) {
     if($_POST['notSeenLeft'] && $_POST['notSeenRight']){
         array_push($_SESSION['omitIds'], $_POST['left']['tmdb_id'], $_POST['right']['tmdb_id']);

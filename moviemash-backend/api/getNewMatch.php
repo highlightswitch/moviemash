@@ -16,7 +16,7 @@ define("TABLE", "tmdb_movie");
 $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
 
-require_once 'databaseConn.php';
+require_once '../db_conn/databaseConn.php';
 if($conn = connectToDatabase()) {
 
     //TODO: Most of the omitIds code has not been tested properly
