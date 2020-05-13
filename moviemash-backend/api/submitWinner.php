@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!$_SESSION['playedMatchUps'])
+if(!isset($_SESSION['playedMatchUps']))
     $_SESSION['playedMatchUps'] = array();
 
 //TODO: Dont know if we need these headers. Maybe issues with CORS
