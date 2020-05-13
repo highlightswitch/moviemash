@@ -32,10 +32,17 @@ ol, ul {
     float: bottom;
 }
 
-.board {
+.card-board {
     display: grid;
     background: burlywood;
     grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
+
+.button-board {
+    display: grid;
+    background: burlywood;
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
 }
 

@@ -10,26 +10,26 @@ const GET_PATH = "api/getNewMatch.php";
 function Card(props) {
     return (
         <div className="card">
-            <img src={props.movieDetails.img} className="poster" onClick={props.onClick} alt={props.movieDetails.title} />
-            {props.movieDetails.title} ({props.movieDetails.year})
+            <img src={props.movieDetails.img} className="poster" onClick={props.onPosterClicked} alt={props.movieDetails.title} />
+            <h3>{props.movieDetails.title}</h3>
         </div>
     );
 }
 
-class Board extends React.Component {
+class CardBoard extends React.Component {
 
     renderPosterCard(i) {
         return (
             <Card
                 movieDetails={this.props.movieDetails[i]}
-                onClick={() => this.props.onClick(i)}
+                onPosterClicked={() => this.props.onPosterClicked(i)}
             />
         );
     }
 
     render() {
         return (
-            <div className="board">
+            <div className="card-board">
                 {this.renderPosterCard(0)}
                 {this.renderPosterCard(1)}
             </div>
@@ -37,10 +37,24 @@ class Board extends React.Component {
     }
 }
 
+function ButtonBoard(props) {
+    return (
+        <div className="button-board">
+            <button onClick={() => props.onNotSeenClicked(0)}>I've not seen this one</button>
+            <button onClick={() => props.onNotSeenClicked(1)}>I've not seen both</button>
+            <button onClick={() => props.onNotSeenClicked(2)}>I've not seen this one</button>
+        </div>
+    );
+}
+
 class Game extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {ready: false};
+        this.state = {
+            ready: false,
+            notSeenLeft: false,
+            notSeenRight: false,
+        };
         this.getMovies();
     }
 
@@ -126,6 +140,38 @@ class Game extends React.Component {
         this.getMovies();
     }
 
+    handleNotSeenClicked(i) {
+        if(i===0) {
+            this.setState(
+                {
+                    notSeenLeft: true,
+                    notSeenRight: false,
+                },
+                this.submitWinner
+            );
+        } else if(i===1) {
+            this.setState(
+                {
+                    notSeenLeft: true,
+                    notSeenRight: true,
+                },
+                this.submitWinner
+            );
+        } else if(i===1) {
+            this.setState(
+                {
+                    notSeenLeft: false,
+                    notSeenRight: true,
+                },
+                this.submitWinner
+            );
+        } else {
+            console.log("ERROR: handlePosterClicked");
+        }
+
+        this.getMovies();
+    }
+
     submitWinner(){
         axios
             .post(SUBMIT_PATH, this.state)
@@ -134,6 +180,8 @@ class Game extends React.Component {
                 this.setState({
                         winningId: -1,
                         losingId: -1,
+                        notSeenLeft: false,
+                        notSeenRight: false,
                     });
             }).catch(error => {
                 console.log(error);
@@ -144,9 +192,13 @@ class Game extends React.Component {
         return (
             <div className="game">
                 <h1>Which is better?</h1>
-                <Board
+                <CardBoard
                     movieDetails={[this.getMovieDetails(true), this.getMovieDetails(false)]}
-                    onClick={(i) => this.handlePosterClicked(i)}
+                    onPosterClicked={(i) => this.handlePosterClicked(i)}
+                />
+                <ButtonBoard
+                    movieDetails={[this.getMovieDetails(true), this.getMovieDetails(false)]}
+                    onNotSeenClicked={(i) => this.handleNotSeenClicked(i)}
                 />
             </div>
         );

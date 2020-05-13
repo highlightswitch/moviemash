@@ -2,6 +2,8 @@
 session_start();
 if(!isset($_SESSION['playedMatchUps']))
     $_SESSION['playedMatchUps'] = array();
+if(!isset($_SESSION['omitIds']))
+    $_SESSION['omitIds'] = array();
 
 //TODO: Dont know if we need these headers. Maybe issues with CORS
 //header('Access-Control-Allow-Origin: *');
@@ -15,7 +17,15 @@ $_POST = json_decode($rest_json, true);
 
 require_once 'databaseConn.php';
 if($conn = connectToDatabase()) {
-    submitWinner($conn);
+    if($_POST['notSeenLeft'] && $_POST['notSeenRight']){
+        array_push($_SESSION['omitIds'], $_POST['left']['tmdb_id'], $_POST['right']['tmdb_id']);
+    } else if($_POST['notSeenLeft']){
+        array_push($_SESSION['omitIds'], $_POST['left']['tmdb_id']);
+    } else if($_POST['notSeenRight']){
+        array_push($_SESSION['omitIds'], $_POST['right']['tmdb_id']);
+    } else {
+        submitWinner($conn);
+    }
 }
 
 function submitWinner($conn){

@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!isset($_SESSION['playedMatchUps']))
+    $_SESSION['playedMatchUps'] = array();
+if(!isset($_SESSION['omitIds']))
+    $_SESSION['omitIds'] = array();
 
 //TODO: Dont know if we need these headers. Maybe issues with CORS
 //header('Access-Control-Allow-Origin: *');
@@ -15,21 +19,28 @@ $_POST = json_decode($rest_json, true);
 require_once 'databaseConn.php';
 if($conn = connectToDatabase()) {
 
+    //TODO: Most of the omitIds code has not been tested properly
+    $omitIds = $_SESSION['omitIds'];
+
     $left = getRandomMovie(
         $conn,
-        array()
+        $omitIds
     );
+
+    foreach (getListOfAlreadyPlayedOpponents($left['tmdb_id']) as $opponentId)
+        array_push($omitIds, $opponentId);
+
 
     $right = getOpponent(
         $conn,
         $left,
-        getOmitIds($left['tmdb_id'])
+        $omitIds
     );
 
     echo json_encode(array("left"=>$left, "right"=>$right));
 }
 
-function getOmitIds($leftId){
+function getListOfAlreadyPlayedOpponents($leftId){
     $omitIds = array();
     array_push($omitIds, $leftId);
     foreach ($_SESSION['playedMatchUps'] as $match){
