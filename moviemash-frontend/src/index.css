@@ -7,6 +7,10 @@ ol, ul {
     padding-left: 30px;
 }
 
+td {
+    font-size: 36px;
+}
+
 .card {
     display: grid;
     width: 50%;
@@ -26,6 +30,11 @@ ol, ul {
     padding: 0;
     text-align: center;
     width: 200px;
+}
+
+.poster-icon {
+    height: 90px;
+    width: 60px;
 }
 
 .movie-details {
