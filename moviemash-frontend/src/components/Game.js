@@ -57,7 +57,6 @@ class Game extends React.Component {
             notSeenLeft: false,
             notSeenRight: false,
         };
-        this.getMovies();
     }
 
     getMovies(){
@@ -184,6 +183,10 @@ class Game extends React.Component {
                 />
             </div>
         );
+    }
+
+    componentDidMount() {
+        this.getMovies();
     }
 }
 
