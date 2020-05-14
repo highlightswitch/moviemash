@@ -1,7 +1,8 @@
 <?php
 
-require_once '../api/databaseConn.php';
+require_once '../db_conn/databaseConn.php';
 if ($conn = connectToDatabase()) {
+    error_log("Success connecting to database");
     for($i = 1; $i < 51; $i++){
         $rest_json = file_get_contents("http://api.themoviedb.org/3/movie/top_rated?api_key=aa648c1311924884ef722848e62f8b64&language=en-US&page=$i");
         $decoded = json_decode($rest_json, true);
@@ -11,7 +12,10 @@ if ($conn = connectToDatabase()) {
                 insertMovie($conn, $movie);
             }
         }
+        error_log("Page " . $i . "done (each page has 25 movies on it)");
     }
+} else {
+    error_log("Error connecting to database");
 }
 
 function createMovieEntry($movie_decoded){
