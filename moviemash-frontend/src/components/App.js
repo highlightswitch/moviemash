@@ -11,20 +11,19 @@ import Leaderboard from "./Leaderboard";
 
 function Bar(props) {
     return (
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="#home">MovieMash</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav variant="tabs" defaultActiveKey="game" onSelect={(key) => props.onTabSelected(key)}>
-                    <Nav.Item>
-                        <Nav.Link eventKey="game">Game</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey="leaderboard">Leaderboard</Nav.Link>
-                    </Nav.Item>
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
+        <div>
+            <Navbar bg="light" expand="lg">
+                <h1>MovieMash</h1>
+            </Navbar>
+            <Nav variant="tabs" justify defaultActiveKey="game" onSelect={(key) => props.onTabSelected(key)}>
+                <Nav.Item>
+                    <Nav.Link eventKey="game">Game</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="leaderboard">Leaderboard</Nav.Link>
+                </Nav.Item>
+            </Nav>
+        </div>
     )
 }
 
