@@ -83,8 +83,10 @@ function updateNewScore($conn, $player){
 
 class Player{
 
-    public int $id;
-    public int $oldScore;
+    //For some reason the php server on the RPi doesn't like it
+    // when these fields are of type int. So took away the types for now
+    public $id;
+    public $oldScore;
 
     function __construct($id, $oldScore) {
         $this->id = $id;
