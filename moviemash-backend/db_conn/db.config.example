@@ -1,6 +1,9 @@
 {
   "host": "...",
+  "port": "0000",
+
   "username": "...",
   "password": "...",
+
   "database": "..."
 }
