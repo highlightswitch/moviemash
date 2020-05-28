@@ -1,35 +1,65 @@
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
-}
-
-ol, ul {
-    padding-left: 30px;
 }
 
 td {
-    font-size: 36px;
+    /*font-size: xx-large;*/
+}
+
+#app{
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+/*.game {*/
+/*    display: grid;*/
+/*    grid-template-rows: auto 10%;*/
+/*    grid-template-columns: auto auto auto;*/
+
+/*    grid-row: 2;*/
+/*}*/
+
+/*.card-board {*/
+/*    grid-row: 1;*/
+/*}*/
+
+/*.movie-details {*/
+/*    float: bottom;*/
+/*}*/
+
+/*.card-deck {*/
+/*    display: grid;*/
+/*    grid-template-rows: auto;*/
+/*    grid-template-columns: auto auto;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*}*/
+
+.card-deck {
+    /*height: 60%;*/
 }
 
 .card {
-    display: grid;
-    width: 50%;
-    margin: 0 auto;
+    /*max-height: 70vh;*/
+    /*width: auto;*/
+    /*max-width: 40vw;*/
+    /*margin: auto;*/
 }
 
-.poster {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 300px;
-    margin-right: 10px;
-    margin-top: 1px;
-    padding: 0;
-    text-align: center;
-    width: 200px;
+.cardImg {
+    /*max-width:30vw;*/
+    /*max-height:45vh;*/
+    /*width: auto;*/
+    /*height: auto;*/
+}
+
+.button-board {
+    /*display: grid;*/
+    /*grid-template-columns: auto auto auto;*/
+    /*grid-row: 2;*/
+    /*grid-gap: 0px;*/
+    /*position:absolute;*/
+    /*bottom:0;*/
 }
 
 .poster-icon {
@@ -37,24 +67,8 @@ td {
     width: 60px;
 }
 
-.movie-details {
-    float: bottom;
-}
-
-.card-board {
-    display: grid;
-    background: burlywood;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 10px;
-}
-
-.button-board {
-    display: grid;
-    background: burlywood;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-}
-
-.game {
-
-}
+/*@media screen and (max-width: 481px){*/
+/*    .button-board {*/
+/*        grid-gap: 0;*/
+/*    }*/
+/*}*/

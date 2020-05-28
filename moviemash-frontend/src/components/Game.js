@@ -5,16 +5,42 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../index.css';
 
+import {
+    Card,
+    Button,
+    Container,
+    Row,
+    Col
+} from "react-bootstrap";
+
 
 const SUBMIT_PATH = "api/submitWinner.php";
 const GET_PATH = "api/getNewMatch.php";
 
-function Card(props) {
+function MovieCard(props) {
     return (
-        <div className="card">
-            <img src={props.movieDetails.img} className="poster" onClick={props.onPosterClicked} alt={props.movieDetails.title} />
-            <h3>{props.movieDetails.title}</h3>
-        </div>
+        <a onClick={props.onPosterClicked}>
+            <Card id={props.id}>
+                <Card.Img
+                    style={{
+                        aspectRatio: 3/2,
+                        // flex: 1,
+                        // flexDirection: 'row',
+                        width: '100%',
+                        // maxHeight: '40%'
+                    }}
+                    className="cardImg"
+                    variant="top"
+                    src={props.movieDetails.img}
+                />
+                <Card.Body>
+                    <Card.Title>{props.movieDetails.title}</Card.Title>
+                    <Card.Text>
+                        This is a temporary description of the movie. Maybe also include
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        </a>
     );
 }
 
@@ -22,30 +48,48 @@ class CardBoard extends React.Component {
 
     renderPosterCard(i) {
         return (
-            <Card
+            <MovieCard
+                id={"card" + i}
                 movieDetails={this.props.movieDetails[i]}
                 onPosterClicked={() => this.props.onPosterClicked(i)}
+                style={{
+                    height: '40%'
+                }}
             />
         );
     }
 
     render() {
         return (
-            <div className="card-board">
-                {this.renderPosterCard(0)}
-                {this.renderPosterCard(1)}
-            </div>
+            <Container>
+                <Row>
+                    <Col>
+                        {this.renderPosterCard(0)}
+                    </Col>
+                    <Col>
+                        {this.renderPosterCard(1)}
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
 
 function ButtonBoard(props) {
     return (
-        <div className="button-board">
-            <button onClick={() => props.onNotSeenClicked(0)}>I've not seen this one</button>
-            <button onClick={() => props.onNotSeenClicked(1)}>I've not seen both</button>
-            <button onClick={() => props.onNotSeenClicked(2)}>I've not seen this one</button>
-        </div>
+        <Container className="button-board">
+            <Row>
+                <Col>
+                    <Button id="button0" onClick={() => props.onNotSeenClicked(0)}>I've not seen this one</Button>
+                </Col>
+                <Col>
+                    <Button id="button1" onClick={() => props.onNotSeenClicked(1)}>I've not seen both</Button>
+                </Col>
+                <Col>
+                    <Button id="button2" onClick={() => props.onNotSeenClicked(2)}>I've not seen this one</Button>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 
@@ -171,17 +215,21 @@ class Game extends React.Component {
 
     render() {
         return (
-            <div className="game">
-                <h1>Which is better?</h1>
-                <CardBoard
-                    movieDetails={[this.getMovieDetails(true), this.getMovieDetails(false)]}
-                    onPosterClicked={(i) => this.handlePosterClicked(i)}
-                />
+            <Container>
+                {/*<h1>Which is better?</h1>*/}
+                <Row>
+                    <CardBoard
+                        movieDetails={[this.getMovieDetails(true), this.getMovieDetails(false)]}
+                        onPosterClicked={(i) => this.handlePosterClicked(i)}
+                    />
+                </Row>
+                <Row>
                 <ButtonBoard
                     movieDetails={[this.getMovieDetails(true), this.getMovieDetails(false)]}
                     onNotSeenClicked={(i) => this.handleNotSeenClicked(i)}
                 />
-            </div>
+                </Row>
+            </Container>
         );
     }
 

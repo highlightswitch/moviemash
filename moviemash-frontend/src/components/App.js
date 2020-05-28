@@ -13,7 +13,7 @@ function Bar(props) {
     return (
         <div>
             <Navbar bg="light" expand="lg">
-                <h1>MovieMash</h1>
+                <h2>MovieMash</h2>
             </Navbar>
             <Nav variant="tabs" justify defaultActiveKey="game" onSelect={(key) => props.onTabSelected(key)}>
                 <Nav.Item>
