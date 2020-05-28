@@ -19,7 +19,7 @@ const GET_PATH = "api/getNewMatch.php";
 
 function MovieCard(props) {
     return (
-        <a onClick={props.onPosterClicked}>
+        <div onClick={props.onPosterClicked}>
             <Card id={props.id}>
                 <Card.Img
                     style={{
@@ -40,7 +40,7 @@ function MovieCard(props) {
                     </Card.Text>
                 </Card.Body>
             </Card>
-        </a>
+        </div>
     );
 }
 
